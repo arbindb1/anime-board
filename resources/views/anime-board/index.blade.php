@@ -24,23 +24,23 @@
     <div class="h-full flex flex-col">
         <!-- Main Board Columns -->
         <!-- Tabs Header -->
-        <div class="flex flex-wrap gap-2 md:gap-4 border-b border-gray-800 pb-4 mb-6 shrink-0">
-            <button onclick="switchTab('watching')" id="tab-btn-watching" class="tab-btn active-tab bg-brand-card text-white ring-1 ring-brand-accent/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+        <div class="flex overflow-x-auto whitespace-nowrap gap-2 md:gap-4 border-b border-gray-800 pb-4 mb-6 shrink-0 custom-scrollbar">
+            <button onclick="switchTab('watching')" id="tab-btn-watching" class="tab-btn active-tab bg-brand-card text-white ring-1 ring-brand-accent/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
                 <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
                 Watching
                 <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $watching->count() }}</span>
             </button>
-            <button onclick="switchTab('plan-to-watch')" id="tab-btn-plan-to-watch" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+            <button onclick="switchTab('plan-to-watch')" id="tab-btn-plan-to-watch" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
                 <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
                 Plan to watch
                 <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $planToWatch->count() }}</span>
             </button>
-            <button onclick="switchTab('completed')" id="tab-btn-completed" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+            <button onclick="switchTab('completed')" id="tab-btn-completed" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
                 <span class="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></span>
                 Completed
                 <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $completed->count() }}</span>
             </button>
-            <button onclick="switchTab('dropped')" id="tab-btn-dropped" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+            <button onclick="switchTab('dropped')" id="tab-btn-dropped" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
                 <span class="w-2.5 h-2.5 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.6)]"></span>
                 Dropped
                 <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $dropped->count() }}</span>
@@ -268,7 +268,7 @@
         </div>
 
         <!-- Collection Grid Modal -->
-        <div id="collection-grid-modal" class="fixed inset-0 z-40 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div id="collection-grid-modal" class="fixed inset-0 z-[110] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
             <!-- Modal Backdrop -->
             <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeCollectionGrid()"></div>
             <!-- Modal Content -->
