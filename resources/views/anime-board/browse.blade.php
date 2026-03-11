@@ -13,7 +13,7 @@
                 <p>No anime found. Try searching for something else.</p>
             </div>
         @else
-            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-4 md:gap-6 overflow-y-auto pb-4 custom-scrollbar">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6 overflow-y-auto pb-4 custom-scrollbar">
                 @foreach($animes as $apiAnime)
                     @php
                         // Map Jikan API data to match our typical anime object shape for the UI

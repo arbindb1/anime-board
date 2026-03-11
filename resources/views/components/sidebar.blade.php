@@ -1,5 +1,14 @@
-<aside class="w-64 bg-brand-dark h-full flex flex-col border-r border-gray-800 shrink-0 hidden md:flex">
-    <div class="p-6">
+<!-- Mobile Sidebar Overlay -->
+<div id="mobile-sidebar-overlay" onclick="closeSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90] hidden md:hidden transition-opacity opacity-0"></div>
+
+<!-- Sidebar -->
+<aside id="mobile-sidebar" class="w-64 bg-brand-dark h-full flex flex-col border-r border-gray-800 shrink-0 fixed inset-y-0 left-0 z-[100] transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0 md:flex">
+    <div class="p-6 relative">
+        <button onclick="closeSidebar()" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-full transition-colors md:hidden">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
         <div class="flex items-center gap-3 text-white font-bold text-lg mb-8 tracking-wide">
             <svg class="w-6 h-6 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path>

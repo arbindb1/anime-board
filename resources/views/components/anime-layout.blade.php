@@ -21,11 +21,16 @@
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col h-full overflow-hidden">
         <!-- Top Navigation / Search -->
-        <header class="h-16 flex items-center justify-between px-6 lg:px-8 bg-brand-darkest shrink-0">
-            <div>
-                <h1 class="text-2xl font-bold text-white tracking-wide">
+        <header class="h-16 flex items-center justify-between px-4 lg:px-8 bg-brand-darkest shrink-0 border-b border-gray-800 md:border-none">
+            <div class="flex items-center gap-3">
+                <button onclick="openSidebar()" class="md:hidden p-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <h1 class="text-xl md:text-2xl font-bold text-white tracking-wide">
                     Anime Boards
-                    <span class="block text-xs font-normal text-gray-400 tracking-normal mt-0.5">Track your anime list and organize your watching schedule.</span>
+                    <span class="hidden md:block text-xs font-normal text-gray-400 tracking-normal mt-0.5">Track your anime list and organize your watching schedule.</span>
                 </h1>
             </div>
             
@@ -38,17 +43,17 @@
                     </span>
                     <input type="text" placeholder="Search anime by title..." class="w-full pl-10 pr-4 py-2 bg-brand-dark border-transparent rounded-lg text-sm focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-white placeholder-gray-500 transition-colors">
                 </div>
-                <button onclick="openAddAnimeModal()" class="bg-brand-accent hover:bg-brand-accentHover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-sm shadow-brand-accent/30">
+                <button onclick="openAddAnimeModal()" class="bg-brand-accent hover:bg-brand-accentHover text-white px-3 py-2 md:px-4 md:py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-sm shadow-brand-accent/30">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
-                    Add anime
+                    <span class="hidden sm:inline">Add anime</span>
                 </button>
             </div>
         </header>
 
         <!-- Page Content -->
-        <main class="flex-1 overflow-x-auto overflow-y-hidden p-6 lg:p-8 pt-4">
+        <main class="flex-1 overflow-x-auto overflow-y-hidden p-4 lg:p-8 pt-4">
             {{ $slot }}
         </main>
     </div>
@@ -345,6 +350,31 @@
         // Store current active anime globally when panel opens
         window.currentActiveAnime = null;
         
+        // Sidebar Mobile Toggle functions
+        function openSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('mobile-sidebar-overlay');
+            if(sidebar && overlay) {
+                overlay.classList.remove('hidden');
+                sidebar.classList.remove('-translate-x-full');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                }, 10);
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('mobile-sidebar-overlay');
+            if(sidebar && overlay) {
+                overlay.classList.add('opacity-0');
+                sidebar.classList.add('-translate-x-full');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+            }
+        }
+
         // Listen for openPanel event to save the data
         const originalOpenPanel = window.openPanel;
         window.openPanel = function(anime) {

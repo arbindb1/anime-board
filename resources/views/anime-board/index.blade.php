@@ -153,7 +153,7 @@
 
     <x-slot name="detailsPanel">
         <!-- Anime Details Side Panel (Hidden by default) -->
-        <div id="anime-details-panel" class="fixed inset-y-0 right-0 w-[400px] bg-brand-dark border-l border-gray-800 transform translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col shadow-2xl">
+        <div id="anime-details-panel" class="fixed inset-y-0 right-0 w-full sm:w-[400px] bg-brand-dark border-l border-gray-800 transform translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col shadow-2xl">
             <!-- Loading or Content Area -->
             <div id="panel-content" class="flex-1 overflow-y-auto h-full flex flex-col">
                 <!-- Banner Image -->
