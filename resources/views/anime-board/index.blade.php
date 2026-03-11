@@ -24,27 +24,38 @@
     <div class="h-full flex flex-col">
         <!-- Main Board Columns -->
         <!-- Tabs Header -->
-        <div class="flex overflow-x-auto whitespace-nowrap gap-2 md:gap-4 border-b border-gray-800 pb-4 mb-6 shrink-0 custom-scrollbar">
-            <button onclick="switchTab('watching')" id="tab-btn-watching" class="tab-btn active-tab bg-brand-card text-white ring-1 ring-brand-accent/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
-                <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
-                Watching
-                <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $watching->count() }}</span>
-            </button>
-            <button onclick="switchTab('plan-to-watch')" id="tab-btn-plan-to-watch" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
-                <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
-                Plan to watch
-                <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $planToWatch->count() }}</span>
-            </button>
-            <button onclick="switchTab('completed')" id="tab-btn-completed" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
-                <span class="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></span>
-                Completed
-                <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $completed->count() }}</span>
-            </button>
-            <button onclick="switchTab('dropped')" id="tab-btn-dropped" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
-                <span class="w-2.5 h-2.5 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.6)]"></span>
-                Dropped
-                <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $dropped->count() }}</span>
-            </button>
+        <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-6 shrink-0">
+            <div class="flex overflow-x-auto whitespace-nowrap gap-2 md:gap-4 custom-scrollbar pr-4">
+                <button onclick="switchTab('watching')" id="tab-btn-watching" class="tab-btn active-tab bg-brand-card text-white ring-1 ring-brand-accent/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
+                    <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+                    Watching
+                    <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $watching->count() }}</span>
+                </button>
+                <button onclick="switchTab('plan-to-watch')" id="tab-btn-plan-to-watch" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
+                    Plan to watch
+                    <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $planToWatch->count() }}</span>
+                </button>
+                <button onclick="switchTab('completed')" id="tab-btn-completed" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
+                    <span class="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></span>
+                    Completed
+                    <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $completed->count() }}</span>
+                </button>
+                <button onclick="switchTab('dropped')" id="tab-btn-dropped" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.6)]"></span>
+                    Dropped
+                    <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $dropped->count() }}</span>
+                </button>
+            </div>
+            
+            <!-- Drag & Drop Toggle -->
+            <div class="flex items-center gap-3 pl-4 border-l border-gray-800 shrink-0">
+                <span class="text-xs text-gray-400 font-medium hidden sm:block uppercase tracking-wider">Sort Mode</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="toggle-drag-drop" onchange="toggleDragDrop()" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-accent"></div>
+                </label>
+            </div>
         </div>
 
         <!-- Tab Contents -->
@@ -53,7 +64,7 @@
             <div id="tab-content-watching" class="tab-content grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 md:gap-6">
                 @foreach($groupedWatching as $group)
                     @if($group->count() == 1)
-                        <div data-id="{{ $group->first()->id }}" onclick="openPanel({{ $group->first()->toJson() }})">
+                        <div data-id="{{ $group->first()->id }}" onclick='openPanel(@json($group->first()))'>
                             <x-anime-card :anime="$group->first()" />
                         </div>
                     @else
@@ -62,7 +73,7 @@
                         </div>
                         <template id="collection-tpl-{{ md5($group->first()->group_name) }}">
                             @foreach($group as $anime)
-                                <div onclick="openPanel({{ $anime->toJson() }})">
+                                <div onclick='openPanel(@json($anime))'>
                                     <x-anime-card :anime="$anime" />
                                 </div>
                             @endforeach
@@ -78,7 +89,7 @@
             <div id="tab-content-plan-to-watch" class="tab-content hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 md:gap-6">
                 @foreach($groupedPlanToWatch as $group)
                     @if($group->count() == 1)
-                        <div data-id="{{ $group->first()->id }}" onclick="openPanel({{ $group->first()->toJson() }})">
+                        <div data-id="{{ $group->first()->id }}" onclick='openPanel(@json($group->first()))'>
                             <x-anime-card :anime="$group->first()" />
                         </div>
                     @else
@@ -87,7 +98,7 @@
                         </div>
                         <template id="collection-tpl-{{ md5($group->first()->group_name) }}">
                             @foreach($group as $anime)
-                                <div onclick="openPanel({{ $anime->toJson() }})">
+                                <div onclick='openPanel(@json($anime))'>
                                     <x-anime-card :anime="$anime" />
                                 </div>
                             @endforeach
@@ -103,7 +114,7 @@
             <div id="tab-content-completed" class="tab-content hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 md:gap-6">
                 @foreach($groupedCompleted as $group)
                     @if($group->count() == 1)
-                        <div data-id="{{ $group->first()->id }}" onclick="openPanel({{ $group->first()->toJson() }})">
+                        <div data-id="{{ $group->first()->id }}" onclick='openPanel(@json($group->first()))'>
                             <x-anime-card :anime="$group->first()" />
                         </div>
                     @else
@@ -112,7 +123,7 @@
                         </div>
                         <template id="collection-tpl-{{ md5($group->first()->group_name) }}">
                             @foreach($group as $anime)
-                                <div onclick="openPanel({{ $anime->toJson() }})">
+                                <div onclick='openPanel(@json($anime))'>
                                     <x-anime-card :anime="$anime" />
                                 </div>
                             @endforeach
@@ -451,6 +462,8 @@
         }
 
         // Initialize SortableJS
+        let sortableInstances = [];
+
         document.addEventListener('DOMContentLoaded', () => {
             const grids = [
                 document.getElementById('tab-content-watching'),
@@ -461,9 +474,10 @@
 
             grids.forEach(grid => {
                 if(grid) {
-                    new Sortable(grid, {
+                    const instance = new Sortable(grid, {
                         animation: 150,
                         ghostClass: 'opacity-50',
+                        disabled: true, // Drag state defaults to OFF
                         onEnd: function (evt) {
                             // Collect the new order of IDs
                             const items = Array.from(grid.children);
@@ -490,8 +504,28 @@
                             }
                         }
                     });
+
+                    sortableInstances.push(instance);
                 }
             });
         });
+
+        function toggleDragDrop() {
+            const isEnabled = document.getElementById('toggle-drag-drop').checked;
+            
+            // Enable or disable Sortable instances
+            sortableInstances.forEach(instance => {
+                instance.option('disabled', !isEnabled);
+            });
+
+            // Toggle CSS classes to show a grab cursor or normal view
+            document.querySelectorAll('.tab-content').forEach(grid => {
+                if(isEnabled) {
+                    grid.classList.add('cursor-grab');
+                } else {
+                    grid.classList.remove('cursor-grab');
+                }
+            });
+        }
     </script>
 </x-anime-layout>
