@@ -7,11 +7,14 @@ use App\Http\Controllers\AnimeBrowseController;
 
 // The main watch list page
 Route::get('/', [AnimeController::class, 'index'])->name('anime-board.index');
+Route::get('/favourites', [AnimeController::class, 'favourites'])->name('anime-board.favourites');
 Route::get('/browse', [AnimeBrowseController::class, 'index'])->name('anime-board.browse');
 Route::post('/', [AnimeController::class, 'store'])->name('anime-board.store');
 Route::put('/anime/{anime}', [AnimeController::class, 'update'])->name('anime-board.update');
 Route::delete('/anime/{anime}', [AnimeController::class, 'destroy'])->name('anime-board.destroy');
 Route::post('/anime/reorder', [AnimeController::class, 'reorder'])->name('anime-board.reorder');
+Route::post('/anime/collection/toggle-favourite', [AnimeController::class, 'toggleCollectionFavourite'])->name('anime-board.toggle-collection-favourite');
+Route::post('/anime/{anime}/toggle-favourite', [AnimeController::class, 'toggleFavourite'])->name('anime-board.toggle-favourite');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

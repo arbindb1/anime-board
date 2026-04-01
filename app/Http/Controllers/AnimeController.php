@@ -114,4 +114,49 @@ class AnimeController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function toggleFavourite(Anime $anime)
+    {
+        $anime->is_favourite = !$anime->is_favourite;
+        $anime->save();
+
+        return response()->json([
+            'success' => true,
+            'is_favourite' => $anime->is_favourite
+        ]);
+    }
+
+    public function toggleCollectionFavourite(Request $request)
+    {
+        $request->validate([
+            'group_name' => 'required|string'
+        ]);
+
+        $groupName = $request->input('group_name');
+        
+        $animes = Anime::where('group_name', $groupName)->get();
+        if ($animes->isEmpty()) {
+            return response()->json(['success' => false]);
+        }
+
+        $anyFavourite = $animes->where('is_favourite', true)->count() > 0;
+        $newStatus = !$anyFavourite;
+
+        Anime::where('group_name', $groupName)->update(['is_favourite' => $newStatus]);
+
+        return response()->json([
+            'success' => true,
+            'is_favourite' => $newStatus
+        ]);
+    }
+
+    public function favourites()
+    {
+        $favourites = Anime::where('is_favourite', true)
+            ->orderByRaw('CASE WHEN sort_order = 0 OR sort_order IS NULL THEN 999999 ELSE sort_order END ASC')
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        return view('anime-board.favourites', compact('favourites'));
+    }
 }

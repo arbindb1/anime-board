@@ -97,6 +97,11 @@
                             <option value="Dropped">Dropped</option>
                         </select>
                     </div>
+                    
+                    <div class="space-y-1 md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-400">Image URL</label>
+                        <input type="url" name="image_url" id="add-input-image_url" placeholder="https://example.com/image.jpg" class="w-full px-3 py-2 bg-brand-card border border-gray-700 rounded-lg text-white focus:ring-1 focus:ring-brand-accent focus:border-brand-accent">
+                    </div>
 
                     <!-- Grouping Logic -->
                     <div class="md:col-span-2 space-y-3 p-3 bg-black/20 border border-gray-800 rounded-lg">
@@ -202,6 +207,11 @@
                             <option value="Completed">Completed</option>
                             <option value="Dropped">Dropped</option>
                         </select>
+                    </div>
+                    
+                    <div class="space-y-1 md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-400">Image URL</label>
+                        <input type="url" name="image_url" id="edit-input-image_url" placeholder="https://example.com/image.jpg" class="w-full px-3 py-2 bg-brand-card border border-gray-700 rounded-lg text-white focus:ring-1 focus:ring-brand-accent focus:border-brand-accent">
                     </div>
 
                     <!-- Grouping Logic -->
@@ -491,6 +501,7 @@
             document.getElementById('edit-anime-form').action = `/anime/${anime.id}`;
             
             document.getElementById('edit-input-title').value = anime.title;
+            document.getElementById('edit-input-image_url').value = anime.image_url || '';
             document.getElementById('edit-input-genres').value = (anime.genres && Array.isArray(anime.genres)) ? anime.genres.join(', ') : '';
             
             // Handle group check

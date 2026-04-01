@@ -24,10 +24,12 @@ class Anime extends Model
         'progress', // integer
         'group_name', // string
         'sort_order', // integer
+        'is_favourite', // boolean
     ];
 
     protected $casts = [
         'genres' => 'array',
         'score' => 'decimal:1',
+        'is_favourite' => 'boolean',
     ];
 }

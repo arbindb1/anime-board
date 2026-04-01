@@ -15,46 +15,30 @@
                 return $anime->group_name ?: 'single_' . $anime->id;
             });
         }
-        $groupedWatching = groupAnimes($watching);
-        $groupedPlanToWatch = groupAnimes($planToWatch);
-        $groupedCompleted = groupAnimes($completed);
-        $groupedDropped = groupAnimes($dropped);
+        $groupedFavourites = groupAnimes($favourites);
     @endphp
     
     <div class="h-full flex flex-col">
-        <!-- Main Board Columns -->
-        <!-- Tabs Header -->
+        <!-- Header -->
         <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-6 shrink-0">
-            <div class="flex overflow-x-auto whitespace-nowrap gap-2 md:gap-4 custom-scrollbar pr-4">
-                <button onclick="switchTab('watching')" id="tab-btn-watching" class="tab-btn active-tab bg-brand-card text-white ring-1 ring-brand-accent/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
-                    <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
-                    Watching
-                    <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $groupedWatching->count() }}</span>
-                </button>
-                <button onclick="switchTab('plan-to-watch')" id="tab-btn-plan-to-watch" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
-                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
-                    Plan to watch
-                    <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $groupedPlanToWatch->count() }}</span>
-                </button>
-                <button onclick="switchTab('completed')" id="tab-btn-completed" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
-                    <span class="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></span>
-                    Completed
-                    <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $groupedCompleted->count() }}</span>
-                </button>
-                <button onclick="switchTab('dropped')" id="tab-btn-dropped" class="tab-btn text-gray-400 hover:text-white hover:bg-brand-card/50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shrink-0">
-                    <span class="w-2.5 h-2.5 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.6)]"></span>
-                    Dropped
-                    <span class="bg-brand-dark border border-gray-700/50 text-xs px-2 py-0.5 rounded-md">{{ $groupedDropped->count() }}</span>
-                </button>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center border border-yellow-500/30">
+                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-white tracking-wide">Favorites</h1>
+                    <p class="text-sm text-gray-400 mt-1">Your most loved anime and collections</p>
+                </div>
             </div>
-            
         </div>
 
-        <!-- Tab Contents -->
+        <!-- Content -->
         <div class="flex-1 overflow-y-auto pb-4 custom-scrollbar">
-            <!-- Watching Grid -->
-            <div id="tab-content-watching" class="tab-content grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 md:gap-6">
-                @foreach($groupedWatching as $group)
+            <!-- Favourites Grid -->
+            <div id="grid-favourites" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 md:gap-6">
+                @foreach($groupedFavourites as $group)
                     @if($group->count() == 1)
                         <div data-id="{{ $group->first()->id }}" onclick='openPanel(@json($group->first()))'>
                             <x-anime-card :anime="$group->first()" />
@@ -72,83 +56,18 @@
                         </template>
                     @endif
                 @endforeach
-                @if($watching->isEmpty())
-                    <div class="col-span-full py-12 text-center text-gray-500 bg-brand-dark rounded-xl border border-gray-800 border-dashed">No animes in this list.</div>
-                @endif
-            </div>
-
-            <!-- Plan to Watch Grid -->
-            <div id="tab-content-plan-to-watch" class="tab-content hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 md:gap-6">
-                @foreach($groupedPlanToWatch as $group)
-                    @if($group->count() == 1)
-                        <div data-id="{{ $group->first()->id }}" onclick='openPanel(@json($group->first()))'>
-                            <x-anime-card :anime="$group->first()" />
-                        </div>
-                    @else
-                        <div onclick="openCollectionGrid('{{ md5($group->first()->group_name) }}', '{{ addslashes($group->first()->group_name) }}')">
-                            <x-anime-collection-card :group="$group" />
-                        </div>
-                        <template id="collection-tpl-{{ md5($group->first()->group_name) }}">
-                            @foreach($group as $anime)
-                                <div onclick='openPanel(@json($anime))'>
-                                    <x-anime-card :anime="$anime" />
-                                </div>
-                            @endforeach
-                        </template>
-                    @endif
-                @endforeach
-                @if($planToWatch->isEmpty())
-                    <div class="col-span-full py-12 text-center text-gray-500 bg-brand-dark rounded-xl border border-gray-800 border-dashed">No animes in this list.</div>
-                @endif
-            </div>
-
-            <!-- Completed Grid -->
-            <div id="tab-content-completed" class="tab-content hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 md:gap-6">
-                @foreach($groupedCompleted as $group)
-                    @if($group->count() == 1)
-                        <div data-id="{{ $group->first()->id }}" onclick='openPanel(@json($group->first()))'>
-                            <x-anime-card :anime="$group->first()" />
-                        </div>
-                    @else
-                        <div onclick="openCollectionGrid('{{ md5($group->first()->group_name) }}', '{{ addslashes($group->first()->group_name) }}')">
-                            <x-anime-collection-card :group="$group" />
-                        </div>
-                        <template id="collection-tpl-{{ md5($group->first()->group_name) }}">
-                            @foreach($group as $anime)
-                                <div onclick='openPanel(@json($anime))'>
-                                    <x-anime-card :anime="$anime" />
-                                </div>
-                            @endforeach
-                        </template>
-                    @endif
-                @endforeach
-                @if($completed->isEmpty())
-                    <div class="col-span-full py-12 text-center text-gray-500 bg-brand-dark rounded-xl border border-gray-800 border-dashed">No animes in this list.</div>
-                @endif
-            </div>
-
-            <!-- Dropped Grid -->
-            <div id="tab-content-dropped" class="tab-content hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 md:gap-6">
-                @foreach($groupedDropped as $group)
-                    @if($group->count() == 1)
-                        <div data-id="{{ $group->first()->id }}" onclick="openPanel({{ $group->first()->toJson() }})">
-                            <x-anime-card :anime="$group->first()" />
-                        </div>
-                    @else
-                        <div onclick="openCollectionGrid('{{ md5($group->first()->group_name) }}', '{{ addslashes($group->first()->group_name) }}')">
-                            <x-anime-collection-card :group="$group" />
-                        </div>
-                        <template id="collection-tpl-{{ md5($group->first()->group_name) }}">
-                            @foreach($group as $anime)
-                                <div onclick="openPanel({{ $anime->toJson() }})">
-                                    <x-anime-card :anime="$anime" />
-                                </div>
-                            @endforeach
-                        </template>
-                    @endif
-                @endforeach
-                @if($dropped->isEmpty())
-                    <div class="col-span-full py-12 text-center text-gray-500 bg-brand-dark rounded-xl border border-gray-800 border-dashed">No animes in this list.</div>
+                
+                @if($favourites->isEmpty())
+                    <div class="col-span-full py-20 text-center bg-brand-dark rounded-xl border border-gray-800 border-dashed flex flex-col items-center justify-center">
+                        <svg class="w-16 h-16 text-gray-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                        <h3 class="text-lg font-medium text-gray-300">No favorites yet</h3>
+                        <p class="text-gray-500 mt-2 max-w-sm">Star your favorite anime or collections from your library to see them here.</p>
+                        <a href="{{ route('anime-board.index') }}" class="mt-6 px-6 py-2.5 bg-brand-card hover:bg-gray-800 text-white rounded-lg font-medium transition-colors border border-gray-700">
+                            Go to Library
+                        </a>
+                    </div>
                 @endif
             </div>
         </div>
@@ -451,75 +370,44 @@
             }
         }
 
-        // Tab Switching Logic
-        function switchTab(tabId) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            
-            // Remove active styling from all tab buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active-tab', 'bg-brand-card', 'text-white', 'ring-1', 'ring-brand-accent/50');
-                btn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-brand-card/50');
-            });
-
-            // Show target content
-            document.getElementById('tab-content-' + tabId).classList.remove('hidden');
-
-            // Apply active styling to target button
-            const activeBtn = document.getElementById('tab-btn-' + tabId);
-            activeBtn.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-brand-card/50');
-            activeBtn.classList.add('active-tab', 'bg-brand-card', 'text-white', 'ring-1', 'ring-brand-accent/50');
-        }
-
         // Initialize SortableJS
-        let sortableInstances = [];
-
         document.addEventListener('DOMContentLoaded', () => {
-            const grids = [
-                document.getElementById('tab-content-watching'),
-                document.getElementById('tab-content-plan-to-watch'),
-                document.getElementById('tab-content-completed'),
-                document.getElementById('tab-content-dropped')
-            ];
+            const grid = document.getElementById('grid-favourites');
 
-            grids.forEach(grid => {
-                if(grid) {
-                    const instance = new Sortable(grid, {
-                        animation: 150,
-                        ghostClass: 'opacity-50',
-                        delay: 400, // Long press to drag (both mobile and desktop)
-                        delayOnTouchOnly: false,
-                        fallbackTolerance: 5,
-                        onEnd: function (evt) {
-                            // Collect the new order of IDs
-                            const items = Array.from(grid.children);
-                            const orderedIds = items.map(item => item.getAttribute('data-id')).filter(id => id);
-                            
-                            if (orderedIds.length > 0) {
-                                fetch('{{ route('anime-board.reorder') }}', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                    },
-                                    body: JSON.stringify({ anime_ids: orderedIds })
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if(!data.success) {
-                                        console.error('Failed to sort animes');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error sorting animes:', error);
-                                });
-                            }
+            if(grid) {
+                new Sortable(grid, {
+                    animation: 150,
+                    ghostClass: 'opacity-50',
+                    delay: 400, // Long press to drag (both mobile and desktop)
+                    delayOnTouchOnly: false,
+                    fallbackTolerance: 5,
+                    onEnd: function (evt) {
+                        // Collect the new order of IDs
+                        const items = Array.from(grid.children);
+                        const orderedIds = items.map(item => item.getAttribute('data-id')).filter(id => id);
+                        
+                        if (orderedIds.length > 0) {
+                            fetch('{{ route('anime-board.reorder') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({ anime_ids: orderedIds })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if(!data.success) {
+                                    console.error('Failed to sort animes');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error sorting animes:', error);
+                            });
                         }
-                    });
-
-                    sortableInstances.push(instance);
-                }
-            });
+                    }
+                });
+            }
         });
 
         function toggleFav(id, btnElement) {
@@ -542,6 +430,8 @@
                         btnElement.classList.remove('bg-yellow-500/20', 'text-yellow-400');
                         btnElement.classList.add('bg-black/60', 'text-gray-400', 'hover:text-white', 'hover:bg-black/80');
                         svg.setAttribute('fill', 'none');
+                        // Optional: Here we could remove the item from the DOM if we unfavorite from the favorites tab.
+                        // But giving the user a chance to re-favorite before refreshing is usually better.
                     }
                 }
             })
